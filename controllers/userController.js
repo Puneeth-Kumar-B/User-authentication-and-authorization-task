@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 
+//user registration
 const register = async(req, res) => {
     try {
         let { mailID } = req.body;
@@ -27,6 +28,8 @@ const register = async(req, res) => {
     }
 }
 
+
+//user login
 const login = async(req, res) => {
     try {
         var emailID = req.body.emailID
@@ -52,6 +55,8 @@ const login = async(req, res) => {
     }
 }
 
+
+//get user details using jwt
 const getUserDetails = async(req, res) => {
     try {
         const token = await req.header('user-access-token')

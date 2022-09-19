@@ -20,7 +20,8 @@ const register = async(req, res) => {
                 status: req.body.status
             })
             const savedUser = await user.save()
-            res.status(200).json({ message: "User registered successfully", data: savedUser })
+            const data = { name: savedUser.name, mobile: savedUser.mobile, mailID: savedUser.mailID, status: savedUser.status }
+            res.status(200).json({ message: "User registered successfully", data: data })
         }
     } catch (error) {
         console.log(error)
@@ -59,12 +60,12 @@ const login = async(req, res) => {
 //get user details using jwt
 const getUserDetails = async(req, res) => {
     try {
-        const token = await req.header('user-access-token')
+        const token = await req.header('x-auth-token')
         if (!token) return res.status(403).json({ errorMessage: "Access Denied!! No Token Provided" })
         const decoded = await jwt.verify(token, 'verySecretValue')
         req.user = await User.findById(decoded._id)
 
-        return res.header('user-access-token', token).status(200).json({ user: decoded })
+        return res.header('x-auth-token', token).status(200).json({ user: decoded })
     } catch (error) {
         return res.status(400).json({ errorMessage: error.message || error })
     }

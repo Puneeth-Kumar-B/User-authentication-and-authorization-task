@@ -63,9 +63,9 @@ const getUserDetails = async(req, res) => {
         const token = await req.header('x-auth-token')
         if (!token) return res.status(403).json({ errorMessage: "Access Denied!! No Token Provided" })
         const decoded = await jwt.verify(token, 'verySecretValue')
-        req.user = await User.findById(decoded._id)
-
-        return res.header('x-auth-token', token).status(200).json({ user: decoded })
+        let user = { name: decoded.name, mailID: decoded.mailID }
+//         req.user = await User.findById(decoded._id)
+        return res.header('x-auth-token', token).status(200).json({ user })
     } catch (error) {
         return res.status(400).json({ errorMessage: error.message || error })
     }
